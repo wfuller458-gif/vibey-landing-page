@@ -33,10 +33,6 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      // 7-day free trial
-      subscription_data: {
-        trial_period_days: 7,
-      },
       // Pre-fill email if provided
       ...(email && { customer_email: email }),
       // Redirect URLs

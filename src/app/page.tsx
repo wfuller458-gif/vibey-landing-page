@@ -376,7 +376,7 @@ export default function Home() {
                 Monthly
               </h3>
               <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                7 days free cancel anytime.
+                Cancel anytime.
               </p>
             </div>
             <p className="text-white">
@@ -401,7 +401,7 @@ export default function Home() {
                 Yearly
               </h3>
               <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                7 days free cancel anytime.
+                Cancel anytime.
               </p>
             </div>
             <p className="text-white">
