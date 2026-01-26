@@ -1,6 +1,54 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://vibey-backend-production-5589.up.railway.app";
+
 export default function SuccessPage() {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
+  const [license, setLicense] = useState<{ key: string; plan: string; email: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    async function fetchLicense() {
+      if (!sessionId) {
+        setError("No session ID found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/license/${sessionId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch license");
+        }
+        const data = await response.json();
+        setLicense(data);
+      } catch (err) {
+        setError("Could not retrieve license. Please contact support.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchLicense();
+  }, [sessionId]);
+
+  const copyToClipboard = () => {
+    if (license?.key) {
+      navigator.clipboard.writeText(license.key);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#121418] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 text-center">
@@ -25,28 +73,55 @@ export default function SuccessPage() {
           Welcome to Vibey!
         </h1>
 
-        <p className="text-[#d0d0d1] mb-6">
-          Thank you for subscribing! Check your email for your license key.
-          You&apos;ll receive it within the next few minutes.
-        </p>
+        {loading ? (
+          <div className="text-[#d0d0d1] mb-6">Loading your license...</div>
+        ) : error ? (
+          <div className="text-red-400 mb-6">{error}</div>
+        ) : license ? (
+          <>
+            <p className="text-[#d0d0d1] mb-4">
+              Thank you for subscribing! Here&apos;s your license key:
+            </p>
 
-        <div className="bg-[#121418] border border-[#242529] rounded-lg p-4 mb-6">
-          <p className="text-sm text-[#d0d0d1]/60 mb-2">Next steps:</p>
-          <ol className="text-left text-sm text-[#d0d0d1] space-y-2">
-            <li className="flex gap-2">
-              <span className="text-[#0459fe]">1.</span>
-              Download Vibey for your platform
-            </li>
-            <li className="flex gap-2">
-              <span className="text-[#0459fe]">2.</span>
-              Open the app and enter your license key
-            </li>
-            <li className="flex gap-2">
-              <span className="text-[#0459fe]">3.</span>
-              Start building with Claude Code!
-            </li>
-          </ol>
-        </div>
+            {/* License Key Display */}
+            <div className="bg-[#121418] border-2 border-[#0459fe] rounded-lg p-4 mb-6">
+              <p className="font-mono text-xl text-[#0459fe] font-bold tracking-wider mb-2">
+                {license.key}
+              </p>
+              <p className="text-sm text-[#d0d0d1]/60">
+                {license.plan === "monthly" ? "Monthly" : "Yearly"} Plan
+              </p>
+              <button
+                onClick={copyToClipboard}
+                className="mt-3 text-sm text-[#0459fe] hover:underline"
+              >
+                {copied ? "Copied!" : "Copy to clipboard"}
+              </button>
+            </div>
+
+            <div className="bg-[#121418] border border-[#242529] rounded-lg p-4 mb-6">
+              <p className="text-sm text-[#d0d0d1]/60 mb-2">Next steps:</p>
+              <ol className="text-left text-sm text-[#d0d0d1] space-y-2">
+                <li className="flex gap-2">
+                  <span className="text-[#0459fe]">1.</span>
+                  Download Vibey for your Mac
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#0459fe]">2.</span>
+                  Open the app and enter your license key
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#0459fe]">3.</span>
+                  Start building with Claude Code!
+                </li>
+              </ol>
+            </div>
+
+            <p className="text-xs text-[#d0d0d1]/40 mb-6">
+              Save this key somewhere safe!
+            </p>
+          </>
+        ) : null}
 
         <div className="flex flex-col gap-3">
           <Link
@@ -55,10 +130,7 @@ export default function SuccessPage() {
           >
             Download Vibey
           </Link>
-          <Link
-            href="/"
-            className="text-[#0459fe] text-sm hover:underline"
-          >
+          <Link href="/" className="text-[#0459fe] text-sm hover:underline">
             Back to homepage
           </Link>
         </div>
