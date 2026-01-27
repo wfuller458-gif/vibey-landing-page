@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://vibey-backend-production-5589.up.railway.app";
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
 
@@ -50,6 +50,66 @@ export default function SuccessPage() {
   };
 
   return (
+    <>
+      <h1 className="font-[family-name:var(--font-lexend)] font-bold text-2xl text-white mb-4">
+        Welcome to Vibey!
+      </h1>
+
+      {loading ? (
+        <div className="text-[#d0d0d1] mb-6">Loading your license...</div>
+      ) : error ? (
+        <div className="text-red-400 mb-6">{error}</div>
+      ) : license ? (
+        <>
+          <p className="text-[#d0d0d1] mb-4">
+            Thank you for subscribing! Here&apos;s your license key:
+          </p>
+
+          {/* License Key Display */}
+          <div className="bg-[#121418] border-2 border-[#0459fe] rounded-lg p-4 mb-6">
+            <p className="font-mono text-xl text-[#0459fe] font-bold tracking-wider mb-2">
+              {license.key}
+            </p>
+            <p className="text-sm text-[#d0d0d1]/60">
+              {license.plan === "monthly" ? "Monthly" : "Yearly"} Plan
+            </p>
+            <button
+              onClick={copyToClipboard}
+              className="mt-3 text-sm text-[#0459fe] hover:underline"
+            >
+              {copied ? "Copied!" : "Copy to clipboard"}
+            </button>
+          </div>
+
+          <div className="bg-[#121418] border border-[#242529] rounded-lg p-4 mb-6">
+            <p className="text-sm text-[#d0d0d1]/60 mb-2">Next steps:</p>
+            <ol className="text-left text-sm text-[#d0d0d1] space-y-2">
+              <li className="flex gap-2">
+                <span className="text-[#0459fe]">1.</span>
+                Download Vibey for your Mac
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#0459fe]">2.</span>
+                Open the app and enter your license key
+              </li>
+              <li className="flex gap-2">
+                <span className="text-[#0459fe]">3.</span>
+                Start building with Claude Code!
+              </li>
+            </ol>
+          </div>
+
+          <p className="text-xs text-[#d0d0d1]/40 mb-6">
+            Save this key somewhere safe!
+          </p>
+        </>
+      ) : null}
+    </>
+  );
+}
+
+export default function SuccessPage() {
+  return (
     <div className="min-h-screen bg-[#121418] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 text-center">
         {/* Success Icon */}
@@ -69,59 +129,9 @@ export default function SuccessPage() {
           </svg>
         </div>
 
-        <h1 className="font-[family-name:var(--font-lexend)] font-bold text-2xl text-white mb-4">
-          Welcome to Vibey!
-        </h1>
-
-        {loading ? (
-          <div className="text-[#d0d0d1] mb-6">Loading your license...</div>
-        ) : error ? (
-          <div className="text-red-400 mb-6">{error}</div>
-        ) : license ? (
-          <>
-            <p className="text-[#d0d0d1] mb-4">
-              Thank you for subscribing! Here&apos;s your license key:
-            </p>
-
-            {/* License Key Display */}
-            <div className="bg-[#121418] border-2 border-[#0459fe] rounded-lg p-4 mb-6">
-              <p className="font-mono text-xl text-[#0459fe] font-bold tracking-wider mb-2">
-                {license.key}
-              </p>
-              <p className="text-sm text-[#d0d0d1]/60">
-                {license.plan === "monthly" ? "Monthly" : "Yearly"} Plan
-              </p>
-              <button
-                onClick={copyToClipboard}
-                className="mt-3 text-sm text-[#0459fe] hover:underline"
-              >
-                {copied ? "Copied!" : "Copy to clipboard"}
-              </button>
-            </div>
-
-            <div className="bg-[#121418] border border-[#242529] rounded-lg p-4 mb-6">
-              <p className="text-sm text-[#d0d0d1]/60 mb-2">Next steps:</p>
-              <ol className="text-left text-sm text-[#d0d0d1] space-y-2">
-                <li className="flex gap-2">
-                  <span className="text-[#0459fe]">1.</span>
-                  Download Vibey for your Mac
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-[#0459fe]">2.</span>
-                  Open the app and enter your license key
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-[#0459fe]">3.</span>
-                  Start building with Claude Code!
-                </li>
-              </ol>
-            </div>
-
-            <p className="text-xs text-[#d0d0d1]/40 mb-6">
-              Save this key somewhere safe!
-            </p>
-          </>
-        ) : null}
+        <Suspense fallback={<div className="text-[#d0d0d1]">Loading...</div>}>
+          <SuccessContent />
+        </Suspense>
 
         <div className="flex flex-col gap-3">
           <Link
