@@ -78,9 +78,6 @@ function SuccessContent() {
             <p className="font-mono text-xl text-[#0459fe] font-bold tracking-wider mb-2">
               {license.key}
             </p>
-            <p className="text-sm text-[#d0d0d1]/60">
-              {license.plan === "monthly" ? "Monthly" : "Yearly"} Plan
-            </p>
             <button
               onClick={copyToClipboard}
               className="mt-3 text-sm text-[#0459fe] hover:underline"
