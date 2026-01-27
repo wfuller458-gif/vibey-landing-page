@@ -16,7 +16,7 @@ function SuccessContent() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    async function fetchLicense() {
+    async function fetchLicense(attempt = 1) {
       if (!sessionId) {
         setError("No session ID found");
         setLoading(false);
@@ -26,7 +26,15 @@ function SuccessContent() {
       try {
         const response = await fetch(`${BACKEND_URL}/license/${sessionId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch license");
+          const data = await response.json().catch(() => ({}));
+          // If license not found and we haven't tried too many times, wait and retry
+          // (webhook might still be processing)
+          if (response.status === 404 && attempt < 5) {
+            console.log(`License not ready yet, retry ${attempt}/5...`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            return fetchLicense(attempt + 1);
+          }
+          throw new Error(data.error || "Failed to fetch license");
         }
         const data = await response.json();
         setLicense(data);
