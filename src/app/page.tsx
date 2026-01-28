@@ -108,6 +108,10 @@ function ArrowRight() {
 export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<"monthly" | "yearly" | null>(null);
+  const [showPortalModal, setShowPortalModal] = useState(false);
+  const [portalEmail, setPortalEmail] = useState("");
+  const [portalLoading, setPortalLoading] = useState(false);
+  const [portalError, setPortalError] = useState("");
   const visibleCards = 3;
   const maxIndex = Math.max(0, painPoints.length - visibleCards);
 
@@ -148,8 +152,81 @@ export default function Home() {
     }
   };
 
+  const handlePortal = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPortalLoading(true);
+    setPortalError("");
+
+    try {
+      const response = await fetch("/api/portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: portalEmail }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setPortalError(data.error || "No subscription found for this email");
+      }
+    } catch {
+      setPortalError("Something went wrong. Please try again.");
+    } finally {
+      setPortalLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#121418] overflow-x-hidden">
+      {/* Manage Subscription Modal */}
+      {showPortalModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 w-full max-w-md mx-4">
+            <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white mb-2">
+              Manage Subscription
+            </h3>
+            <p className="text-[#d0d0d1]/60 mb-6">
+              Enter the email you used to subscribe.
+            </p>
+            <form onSubmit={handlePortal}>
+              <input
+                type="email"
+                value={portalEmail}
+                onChange={(e) => setPortalEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full bg-[#121418] border border-[#242529] rounded-lg px-4 py-3 text-white placeholder-[#d0d0d1]/40 mb-4 focus:outline-none focus:border-[#0459fe]"
+                required
+              />
+              {portalError && (
+                <p className="text-red-400 text-sm mb-4">{portalError}</p>
+              )}
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPortalModal(false);
+                    setPortalEmail("");
+                    setPortalError("");
+                  }}
+                  className="flex-1 py-3 rounded-lg border border-[#242529] text-[#d0d0d1] hover:bg-[#242529] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={portalLoading}
+                  className="flex-1 bg-[#0459fe] text-white py-3 rounded-lg hover:bg-[#0349d4] transition-colors disabled:opacity-50"
+                >
+                  {portalLoading ? "Loading..." : "Continue"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Background gradient decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-[800px] opacity-30 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-radial from-[#0459fe]/20 via-transparent to-transparent" />
@@ -158,20 +235,19 @@ export default function Home() {
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
         <VibeyLogo />
-        <div className="flex gap-4">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => setShowPortalModal(true)}
+            className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
+          >
+            Manage Subscription
+          </button>
           <a
             href="#"
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-4 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
             <AppleLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Apple</span>
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-4 py-3 rounded hover:bg-[#0349d4] transition-colors"
-          >
-            <WindowsLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
           </a>
         </div>
       </header>
