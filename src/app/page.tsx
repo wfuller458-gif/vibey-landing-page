@@ -509,10 +509,13 @@ export default function Home() {
         <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-center text-white mb-4">
           Price Plans
         </h2>
-        <p className="text-center text-[#d0d0d1] max-w-xl mx-auto mb-12">
-          Subscribe to a plan that works for you. Cancel anytime.{" "}
-          <span className="font-bold text-white">Join the waitlist to receive 20% off.</span>{" "}
-          Pricing plans may change, pricing will be finalised once the app is completed.
+        <p className="text-center text-[#d0d0d1] max-w-xl mx-auto mb-4">
+          Choose a plan that works for you. Cancel anytime.
+        </p>
+        <p className="text-center text-[#d0d0d1] max-w-xl mx-auto mb-12 bg-[#1c1e22] border border-[#242529] rounded-lg px-4 py-3">
+          Early adopter? Use code{" "}
+          <span className="font-bold text-white">EARLYADOPTER20</span>{" "}
+          at checkout for 20% off. Limited time only.
         </p>
 
         <div className="flex flex-col md:flex-row gap-6 justify-center">
@@ -528,7 +531,7 @@ export default function Home() {
             </div>
             <p className="text-white">
               <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                £5.99
+                $7.99
               </span>
               <span className="font-[family-name:var(--font-atkinson)] text-xl">/mo</span>
             </p>
@@ -553,7 +556,7 @@ export default function Home() {
             </div>
             <p className="text-white">
               <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                £39.99
+                $49.99
               </span>
               <span className="font-[family-name:var(--font-atkinson)] text-xl">/yr</span>
             </p>
