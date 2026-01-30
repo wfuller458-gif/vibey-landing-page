@@ -342,7 +342,7 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left - Headline */}
-          <div>
+          <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl leading-tight">
               <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-5xl md:text-6xl lg:text-7xl">
                 Claude Code
@@ -401,7 +401,7 @@ export default function Home() {
       <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
           {/* Left - Photo and Name */}
-          <div>
+          <div className="text-center md:text-left flex flex-col items-center md:items-start">
             <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-[#ebecf0] mb-6">
               About Me
             </h2>
@@ -421,7 +421,7 @@ export default function Home() {
           </div>
 
           {/* Right - Story */}
-          <div className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] leading-relaxed space-y-4">
+          <div className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] leading-relaxed space-y-4 text-center md:text-left">
             <p>I built Vibey to move faster on my side projects.</p>
             <p>
               Claude Code massively expanded what I can build as a designer but working in a
@@ -461,7 +461,7 @@ export default function Home() {
         <div className="relative pl-4 md:pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
           <div className="overflow-hidden">
             <div
-              className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out"
+              className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out pr-4 md:pr-8 lg:pr-[calc((100vw-1280px)/2+32px)]"
               style={{ transform: `translateX(-${carouselIndex * (cardWidth + 16)}px)` }}
             >
               {painPoints.map((point, index) => (
