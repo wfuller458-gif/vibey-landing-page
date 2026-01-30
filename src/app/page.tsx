@@ -458,7 +458,7 @@ export default function Home() {
         </h2>
 
         {/* Carousel - full width, bleeds to edge */}
-        <div className="relative pl-4 md:pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
+        <div className="relative px-4 md:px-8 lg:px-[calc((100vw-1280px)/2+32px)]">
           <div className="overflow-hidden">
             <div
               className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out"
@@ -479,8 +479,6 @@ export default function Home() {
                   </div>
                 </div>
               ))}
-              {/* Spacer to ensure last card is fully visible */}
-              <div className="flex-none w-4 md:w-8 lg:w-[calc((100vw-1280px)/2+32px)]" />
             </div>
           </div>
 
