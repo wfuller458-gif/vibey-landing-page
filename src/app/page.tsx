@@ -541,8 +541,11 @@ export default function Home() {
               </p>
             </div>
             <p className="text-white">
-              <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
+              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through mr-2">
                 $7.99
+              </span>
+              <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
+                $6.39
               </span>
               <span className="font-[family-name:var(--font-atkinson)] text-xl">/mo</span>
             </p>
@@ -566,8 +569,11 @@ export default function Home() {
               </p>
             </div>
             <p className="text-white">
-              <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
+              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through mr-2">
                 $49.99
+              </span>
+              <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
+                $39.99
               </span>
               <span className="font-[family-name:var(--font-atkinson)] text-xl">/yr</span>
             </p>
