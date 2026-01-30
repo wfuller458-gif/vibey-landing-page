@@ -61,13 +61,24 @@ export default function UpgradePage() {
           <h1 className="font-[family-name:var(--font-lexend)] font-bold text-4xl text-center text-white mb-3">
             Upgrade to Vibey
           </h1>
-          <p className="text-center text-[#d0d0d1] mb-4">
-            Choose a plan that works for you. Cancel anytime.
-          </p>
-          <p className="text-center text-[#d0d0d1] mb-10 bg-[#1c1e22] border border-[#242529] rounded-lg px-4 py-3">
-            Early adopter? Use code{" "}
-            <span className="font-bold text-white">EARLYADOPTER20</span>{" "}
-            at checkout for 20% off. Limited time only.
+          <p className="text-center text-[#d0d0d1] mb-10">
+            Choose a plan that works for you. Cancel anytime. Vibey is still in early development with more features on the way. To thank our first users, use code{" "}
+            <span className="inline-flex items-center gap-1">
+              <span className="font-bold text-white">EARLYADOPTER20</span>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("EARLYADOPTER20");
+                }}
+                className="p-1 hover:bg-[#242529] rounded transition-colors"
+                title="Copy code"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#d0d0d1]">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </span>
+            {" "}at checkout for 20% off.
           </p>
 
           <div className="flex flex-col md:flex-row gap-6 justify-center">
