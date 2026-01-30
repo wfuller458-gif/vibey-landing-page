@@ -239,7 +239,7 @@ export default function Home() {
           </a>
           <a
             href="/windows"
-            className="flex items-center gap-2 bg-[#242529] text-white px-6 py-3 rounded hover:bg-[#2a2b30] transition-colors border border-[#3a3b40]"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
             <WindowsLogo />
             <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>

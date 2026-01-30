@@ -29,8 +29,8 @@ export default function WindowsWaitlist() {
 
   return (
     <div className="min-h-screen bg-[#121418] flex flex-col items-center justify-center px-8">
-      <Link href="/" className="absolute top-8 left-8 text-[#d0d0d1] hover:text-white transition-colors">
-        &larr; Back
+      <Link href="/" className="absolute top-8 left-8">
+        <img src="/vibeycodeslogo.png" alt="Vibey.codes" className="h-8" />
       </Link>
 
       <div className="max-w-md w-full text-center">
