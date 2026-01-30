@@ -92,10 +92,29 @@ function ArrowRight() {
   );
 }
 
+// Hamburger menu icon
+function MenuIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 12h18M3 6h18M3 18h18" />
+    </svg>
+  );
+}
+
+// Close icon
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 6L6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
 export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<"monthly" | "yearly" | null>(null);
   const [showPortalModal, setShowPortalModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [portalEmail, setPortalEmail] = useState("");
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState("");
@@ -232,37 +251,91 @@ export default function Home() {
       )}
 
       {/* Background gradient decoration */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-[800px] opacity-30 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-[#0459fe]/20 via-transparent to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-[800px] opacity-30 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-full">
+          <div className="absolute inset-0 bg-gradient-radial from-[#0459fe]/20 via-transparent to-transparent" />
+        </div>
       </div>
 
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between px-4 md:px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
         <VibeyLogo />
-        <div className="flex items-center gap-2 md:gap-6">
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-6">
           <button
             onClick={() => setShowPortalModal(true)}
-            className="hidden md:block font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
+            className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
           >
             Manage Subscription
           </button>
           <a
             href="/Vibey.code.zip"
             download
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-3 md:px-6 py-2 md:py-3 rounded hover:bg-[#0349d4] transition-colors text-sm md:text-base"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
             <AppleLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide hidden sm:inline">Download</span>
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
           </a>
           <a
             href="/windows"
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-3 md:px-6 py-2 md:py-3 rounded hover:bg-[#0349d4] transition-colors text-sm md:text-base"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
             <WindowsLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide hidden sm:inline">Windows</span>
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
           </a>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setShowMobileMenu(true)}
+          className="md:hidden p-2 text-white"
+        >
+          <MenuIcon />
+        </button>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {showMobileMenu && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/70" onClick={() => setShowMobileMenu(false)} />
+          <div className="absolute top-0 right-0 w-72 h-full bg-[#1c1e22] border-l border-[#242529] p-6">
+            <div className="flex justify-end mb-8">
+              <button onClick={() => setShowMobileMenu(false)} className="p-2 text-white">
+                <CloseIcon />
+              </button>
+            </div>
+            <nav className="flex flex-col gap-4">
+              <a
+                href="/Vibey.code.zip"
+                download
+                className="flex items-center gap-3 bg-[#0459fe] text-white px-4 py-3 rounded-lg hover:bg-[#0349d4] transition-colors"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                <AppleLogo />
+                <span className="font-[family-name:var(--font-atkinson)]">Download for Mac</span>
+              </a>
+              <a
+                href="/windows"
+                className="flex items-center gap-3 bg-[#0459fe] text-white px-4 py-3 rounded-lg hover:bg-[#0349d4] transition-colors"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                <WindowsLogo />
+                <span className="font-[family-name:var(--font-atkinson)]">Download for Windows</span>
+              </a>
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  setShowPortalModal(true);
+                }}
+                className="flex items-center gap-3 text-[#d0d0d1] hover:text-white px-4 py-3 rounded-lg border border-[#242529] hover:bg-[#242529] transition-colors text-left"
+              >
+                <span className="font-[family-name:var(--font-atkinson)]">Manage Subscription</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section className="relative z-10 pt-8 md:pt-16 pb-16 md:pb-32" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -270,8 +343,8 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left - Headline */}
           <div>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl leading-tight">
-              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-4xl md:text-6xl lg:text-7xl">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl leading-tight">
+              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-5xl md:text-6xl lg:text-7xl">
                 Claude Code
               </span>
               <br />
@@ -291,6 +364,25 @@ export default function Home() {
             <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-lg md:text-xl mt-4 md:mt-6">
               Download and try the app for free
             </p>
+
+            {/* Mobile Download Buttons */}
+            <div className="flex flex-col gap-3 mt-6 md:hidden">
+              <a
+                href="/Vibey.code.zip"
+                download
+                className="flex items-center justify-center gap-3 bg-[#0459fe] text-white px-6 py-4 rounded-lg hover:bg-[#0349d4] transition-colors"
+              >
+                <AppleLogo />
+                <span className="font-[family-name:var(--font-atkinson)] font-medium">Download for Mac</span>
+              </a>
+              <a
+                href="/windows"
+                className="flex items-center justify-center gap-3 bg-[#0459fe] text-white px-6 py-4 rounded-lg hover:bg-[#0349d4] transition-colors"
+              >
+                <WindowsLogo />
+                <span className="font-[family-name:var(--font-atkinson)] font-medium">Download for Windows</span>
+              </a>
+            </div>
           </div>
 
           {/* Right - Hero Image */}
@@ -320,7 +412,7 @@ export default function Home() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h3 className="font-[family-name:var(--font-lexend)] font-medium text-3xl text-[#d0d0d1]">
+            <h3 className="font-[family-name:var(--font-lexend)] font-medium text-2xl md:text-3xl text-[#d0d0d1]">
               Will Fuller
             </h3>
             <p className="font-[family-name:var(--font-lexend)] font-light text-xl text-[#d0d0d1]">
@@ -353,8 +445,10 @@ export default function Home() {
       </section>
 
       {/* Background gradient for Why section */}
-      <div className="absolute top-[1400px] left-1/2 -translate-x-1/2 w-[1400px] h-[800px] opacity-30 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-radial from-[#0459fe]/20 via-transparent to-transparent" />
+      <div className="absolute top-[1400px] left-0 right-0 h-[800px] opacity-30 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-full">
+          <div className="absolute inset-0 bg-gradient-radial from-[#0459fe]/20 via-transparent to-transparent" />
+        </div>
       </div>
 
       {/* Why Am I Building Vibey Section */}
