@@ -261,7 +261,7 @@ export default function Home() {
                 Terminal
               </span>
             </h1>
-            <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 mt-6">
+            <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-xl mt-6">
               Download and try the app for free
             </p>
           </div>
