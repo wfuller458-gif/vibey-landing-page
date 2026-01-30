@@ -260,7 +260,7 @@ export default function Home() {
               <img
                 src="/terminal-text.png"
                 alt="Terminal"
-                className="inline-block h-[1em] align-baseline"
+                className="inline-block h-[0.85em] align-baseline"
               />
             </h1>
             <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-xl mt-6">
