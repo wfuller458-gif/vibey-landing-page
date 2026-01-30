@@ -461,7 +461,7 @@ export default function Home() {
         <div className="relative pl-4 md:pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
           <div className="overflow-hidden">
             <div
-              className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out pr-4 md:pr-8 lg:pr-[calc((100vw-1280px)/2+32px)]"
+              className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out"
               style={{ transform: `translateX(-${carouselIndex * (cardWidth + 16)}px)` }}
             >
               {painPoints.map((point, index) => (
@@ -479,6 +479,8 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+              {/* Spacer to ensure last card is fully visible */}
+              <div className="flex-none w-4 md:w-8 lg:w-[calc((100vw-1280px)/2+32px)]" />
             </div>
           </div>
 
