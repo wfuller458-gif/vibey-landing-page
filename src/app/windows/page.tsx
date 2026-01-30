@@ -28,14 +28,19 @@ export default function WindowsWaitlist() {
   };
 
   return (
-    <div className="min-h-screen bg-[#121418] flex flex-col items-center justify-center px-4 md:px-8">
-      <header className="absolute top-0 left-0 right-0 z-10 flex items-center px-4 md:px-8 py-4 max-w-[1280px] mx-auto">
+    <div className="min-h-screen bg-[#121418] overflow-x-hidden overflow-y-auto">
+      {/* Header - identical to main page */}
+      <header className="relative z-10 flex items-center justify-between px-4 md:px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
         <Link href="/">
           <img src="/vibeycodeslogo.png" alt="Vibey.codes" className="h-8" />
         </Link>
+        {/* Empty div to maintain justify-between spacing like main page */}
+        <div></div>
       </header>
 
-      <div className="max-w-md w-full text-center">
+      {/* Content centered vertically */}
+      <div className="flex items-center justify-center min-h-[calc(100vh-72px)] px-4 md:px-8">
+        <div className="max-w-md w-full text-center">
         <h1 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-4xl text-white mb-4">
           Windows Coming Soon
         </h1>
@@ -69,6 +74,7 @@ export default function WindowsWaitlist() {
             </button>
           </form>
         )}
+        </div>
       </div>
     </div>
   );
