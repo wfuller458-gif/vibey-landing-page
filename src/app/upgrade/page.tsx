@@ -6,24 +6,11 @@ import Link from "next/link";
 // Logo component
 function VibeyLogo() {
   return (
-    <div className="flex items-center gap-2">
-      <svg
-        width="30"
-        height="30"
-        viewBox="0 0 30 30"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M15 0L30 30H0L15 0Z"
-          fill="#0459FE"
-        />
-      </svg>
-      <span className="text-[#ebecf0] tracking-[3.7px]">
-        <span className="font-[family-name:var(--font-story)] text-2xl">Vibey</span>
-        <span className="font-[family-name:var(--font-lexend)] font-thin text-sm">.code</span>
-      </span>
-    </div>
+    <img
+      src="/vibeylogo.png"
+      alt="Vibey.codes"
+      className="h-8"
+    />
   );
 }
 
@@ -131,10 +118,9 @@ export default function UpgradePage() {
           </div>
 
           <p className="text-center text-[#d0d0d1]/50 text-sm mt-8">
-            Already subscribed?{" "}
-            <Link href="/" className="text-[#0459fe] hover:underline">
-              Enter your license key in the app
-            </Link>
+            Already subscribed? Open Vibey and click{" "}
+            <span className="text-[#0459fe]">&quot;Enter License Key&quot;</span>
+            {" "}in the sidebar.
           </p>
         </div>
       </main>

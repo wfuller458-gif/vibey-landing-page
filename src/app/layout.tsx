@@ -27,18 +27,31 @@ export const metadata: Metadata = {
   description:
     "A native macOS app that brings everything you need for Claude Code into one place. Plans, PRDs, notes, and draft prompts - all ready to send with a single click.",
   keywords: ["Claude Code", "AI coding", "macOS app", "terminal", "developer tools"],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "Vibey.code - Claude Code Without The Pain Of The Terminal",
     description:
       "A native macOS app that brings everything you need for Claude Code into one place.",
     type: "website",
-    url: "https://vibey.code",
+    url: "https://vibey.codes",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1024,
+        height: 1024,
+        alt: "Vibey.code",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Vibey.code - Claude Code Without The Pain Of The Terminal",
     description:
       "A native macOS app that brings everything you need for Claude Code into one place.",
+    images: ["/og-image.png"],
   },
 };
 

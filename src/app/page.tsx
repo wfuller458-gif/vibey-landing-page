@@ -50,9 +50,9 @@ const painPoints = [
 function VibeyLogo() {
   return (
     <img
-      src="/vibeylogo.png"
+      src="/logo.svg"
       alt="Vibey.codes"
-      className="h-8"
+      className="h-10"
     />
   );
 }
@@ -229,14 +229,17 @@ export default function Home() {
           >
             Manage Subscription
           </button>
-          <a
-            href="/Vibey.code.zip"
-            download
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
-          >
-            <AppleLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
-          </a>
+          <div className="flex flex-col items-center">
+            <a
+              href="/Vibey.code.zip"
+              download
+              className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            >
+              <AppleLogo />
+              <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
+            </a>
+            <span className="text-[#d0d0d1]/60 text-xs mt-1">Download and try the app for free</span>
+          </div>
         </div>
       </header>
 
@@ -490,7 +493,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <VibeyLogo />
           <p className="text-[#d0d0d1]/60 text-sm">
-            © 2025 Vibey.code. All rights reserved.
+            © 2026 Vibey.code. All rights reserved.
           </p>
         </div>
       </footer>
