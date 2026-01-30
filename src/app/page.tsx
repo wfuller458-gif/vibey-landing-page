@@ -322,11 +322,6 @@ export default function Home() {
               and Figma links, constantly copying, pasting, and jumping from window to window.
               Now I can plan, write, and prompt without fighting the terminal.
             </p>
-            <p className="font-bold text-[#ebecf0]">
-              The terminal is a terrible WYSIWYG.
-              <br />
-              Vibey fixes that.
-            </p>
           </div>
         </div>
       </section>
@@ -337,13 +332,13 @@ export default function Home() {
       </div>
 
       {/* Why Am I Building Vibey Section */}
-      <section className="relative z-10 max-w-[1280px] mx-auto px-8 py-24">
-        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-center text-[#ebecf0] mb-16">
+      <section className="relative z-10 py-24">
+        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-center text-[#ebecf0] mb-16 max-w-[1280px] mx-auto px-8">
           Why Am I Building Vibey
         </h2>
 
-        {/* Carousel */}
-        <div className="relative">
+        {/* Carousel - full width, bleeds to edge */}
+        <div className="relative pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
           <div className="overflow-hidden">
             <div
               className="flex gap-5 transition-transform duration-300 ease-out"
@@ -368,7 +363,7 @@ export default function Home() {
           </div>
 
           {/* Carousel Controls */}
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="flex justify-end gap-4 mt-8 pr-8 lg:pr-[calc((100vw-1280px)/2+32px)]">
             <button
               onClick={prevSlide}
               disabled={carouselIndex === 0}
