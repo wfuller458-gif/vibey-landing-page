@@ -257,64 +257,24 @@ export default function Home() {
               <span className="font-[family-name:var(--font-lexend)] font-bold text-[#ebecf0]">
                 Of The{" "}
               </span>
-              <span className="font-[family-name:var(--font-story)] text-[#da7757] italic">
-                Terminal
-              </span>
+              <img
+                src="/terminal-text.png"
+                alt="Terminal"
+                className="inline-block h-[1em] align-baseline"
+              />
             </h1>
             <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-xl mt-6">
               Download and try the app for free
             </p>
           </div>
 
-          {/* Right - App Screenshots */}
+          {/* Right - Hero Image */}
           <div className="relative h-[400px] lg:h-[520px]">
-            {/* Placeholder for app screenshots */}
-            <div className="absolute right-0 top-0 w-[350px] h-[420px] bg-[#1c1e22] rounded-lg border border-[#242529] shadow-2xl overflow-hidden">
-              <div className="h-8 bg-[#1a1b1f] flex items-center px-3 gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-              </div>
-              <div className="p-4 font-mono text-sm text-[#d0d0d1]">
-                <p className="text-[#0459fe]">$ claude</p>
-                <p className="mt-2 text-[#d0d0d1]/60">Claude Code v1.0</p>
-                <p className="mt-4">Ready for prompts...</p>
-              </div>
-            </div>
-            <div className="absolute left-0 bottom-0 w-[500px] h-[350px] bg-[#1c1e22] rounded-lg border border-[#242529] shadow-2xl overflow-hidden">
-              <div className="h-8 bg-[#1a1b1f] flex items-center justify-between px-3">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                  <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                  <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-                </div>
-                <span className="text-xs text-[#d0d0d1]/40">Product Requirements (PRD)</span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-[family-name:var(--font-lexend)] font-bold text-[#ebecf0] mb-3">
-                  Product Requirements
-                </h3>
-                <div className="space-y-2 text-sm text-[#d0d0d1]/70">
-                  <p>1. Project Goals</p>
-                  <p>2. Target Audience</p>
-                  <p>3. Feature Backlog</p>
-                  <p>4. Technical Specs</p>
-                </div>
-              </div>
-            </div>
-            {/* Decorative arrow */}
-            <div className="absolute right-[60px] top-[240px] text-[#0459fe]">
-              <svg width="60" height="80" viewBox="0 0 60 80" fill="none">
-                <path
-                  d="M10 10 Q30 40, 50 70"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path d="M45 60 L50 70 L40 68" fill="currentColor" />
-              </svg>
-            </div>
+            <img
+              src="/hero.png"
+              alt="Vibey.codes app screenshot"
+              className="w-full h-full object-contain"
+            />
           </div>
         </div>
       </section>
@@ -328,8 +288,11 @@ export default function Home() {
               About Me
             </h2>
             <div className="w-44 h-44 rounded-full bg-[#242529] mb-6 overflow-hidden">
-              {/* Placeholder for profile photo */}
-              <div className="w-full h-full bg-gradient-to-br from-[#0459fe]/30 to-[#da7757]/30" />
+              <img
+                src="/profile.png"
+                alt="Will Fuller"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h3 className="font-[family-name:var(--font-lexend)] font-medium text-3xl text-[#d0d0d1]">
               Will Fuller
