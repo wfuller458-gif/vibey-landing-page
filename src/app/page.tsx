@@ -49,24 +49,11 @@ const painPoints = [
 // Logo component
 function VibeyLogo() {
   return (
-    <div className="flex items-center gap-2">
-      <svg
-        width="30"
-        height="30"
-        viewBox="0 0 30 30"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M15 0L30 30H0L15 0Z"
-          fill="#0459FE"
-        />
-      </svg>
-      <span className="text-[#ebecf0] tracking-[3.7px]">
-        <span className="font-[family-name:var(--font-story)] text-2xl">Vibey</span>
-        <span className="font-[family-name:var(--font-lexend)] font-thin text-sm">.code</span>
-      </span>
-    </div>
+    <img
+      src="/vibeylogo.png"
+      alt="Vibey.codes"
+      className="h-8"
+    />
   );
 }
 
@@ -243,7 +230,8 @@ export default function Home() {
             Manage Subscription
           </button>
           <a
-            href="#"
+            href="/Vibey.code.zip"
+            download
             className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
             <AppleLogo />
