@@ -241,7 +241,8 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 max-w-[1280px] mx-auto px-8 pt-16 pb-32">
+      <section className="relative z-10 pt-16 pb-32" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="max-w-[1280px] mx-auto px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left - Headline */}
           <div>
@@ -276,6 +277,7 @@ export default function Home() {
               className="w-full h-full object-contain"
             />
           </div>
+        </div>
         </div>
       </section>
 
@@ -332,7 +334,7 @@ export default function Home() {
       </div>
 
       {/* Why Am I Building Vibey Section */}
-      <section className="relative z-10 py-24">
+      <section className="relative z-10 py-24" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-center text-[#ebecf0] mb-16 max-w-[1280px] mx-auto px-8">
           Why Am I Building Vibey
         </h2>
