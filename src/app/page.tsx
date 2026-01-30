@@ -120,7 +120,7 @@ export default function Home() {
   const [portalError, setPortalError] = useState("");
   const [cardWidth, setCardWidth] = useState(450);
   const [visibleCards, setVisibleCards] = useState(3);
-  const maxIndex = Math.max(0, painPoints.length - visibleCards);
+  const maxIndex = Math.max(0, painPoints.length - visibleCards + 1);
 
   // Calculate card width and visible cards based on viewport
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function Home() {
       const newVisibleCards = isMobile ? 1 : 3;
       setVisibleCards(newVisibleCards);
       // Reset carousel to valid index if needed
-      const newMaxIndex = Math.max(0, painPoints.length - newVisibleCards);
+      const newMaxIndex = Math.max(0, painPoints.length - newVisibleCards + 1);
       setCarouselIndex(prev => Math.min(prev, newMaxIndex));
     };
     updateLayout();
