@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Pain point cards data
 const painPoints = [
@@ -99,8 +99,25 @@ export default function Home() {
   const [portalEmail, setPortalEmail] = useState("");
   const [portalLoading, setPortalLoading] = useState(false);
   const [portalError, setPortalError] = useState("");
-  const visibleCards = 3;
+  const [cardWidth, setCardWidth] = useState(450);
+  const [visibleCards, setVisibleCards] = useState(3);
   const maxIndex = Math.max(0, painPoints.length - visibleCards);
+
+  // Calculate card width and visible cards based on viewport
+  useEffect(() => {
+    const updateLayout = () => {
+      const isMobile = window.innerWidth < 768;
+      setCardWidth(isMobile ? window.innerWidth - 48 : 450);
+      const newVisibleCards = isMobile ? 1 : 3;
+      setVisibleCards(newVisibleCards);
+      // Reset carousel to valid index if needed
+      const newMaxIndex = Math.max(0, painPoints.length - newVisibleCards);
+      setCarouselIndex(prev => Math.min(prev, newMaxIndex));
+    };
+    updateLayout();
+    window.addEventListener('resize', updateLayout);
+    return () => window.removeEventListener('resize', updateLayout);
+  }, []);
 
   const nextSlide = () => {
     setCarouselIndex((prev) => Math.min(prev + 1, maxIndex));
@@ -166,7 +183,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#121418] overflow-x-hidden">
+    <div className="min-h-screen bg-[#121418] overflow-x-hidden overflow-y-auto">
       {/* Manage Subscription Modal */}
       {showPortalModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
@@ -220,41 +237,41 @@ export default function Home() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
+      <header className="relative z-10 flex items-center justify-between px-4 md:px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
         <VibeyLogo />
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2 md:gap-6">
           <button
             onClick={() => setShowPortalModal(true)}
-            className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
+            className="hidden md:block font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
           >
             Manage Subscription
           </button>
           <a
             href="/Vibey.code.zip"
             download
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-3 md:px-6 py-2 md:py-3 rounded hover:bg-[#0349d4] transition-colors text-sm md:text-base"
           >
             <AppleLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide hidden sm:inline">Download</span>
           </a>
           <a
             href="/windows"
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            className="flex items-center gap-2 bg-[#0459fe] text-white px-3 md:px-6 py-2 md:py-3 rounded hover:bg-[#0349d4] transition-colors text-sm md:text-base"
           >
             <WindowsLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide hidden sm:inline">Windows</span>
           </a>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-16 pb-32" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <div className="max-w-[1280px] mx-auto px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative z-10 pt-8 md:pt-16 pb-16 md:pb-32" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left - Headline */}
           <div>
-            <h1 className="text-5xl lg:text-6xl leading-tight">
-              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-6xl lg:text-7xl">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl leading-tight">
+              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-4xl md:text-6xl lg:text-7xl">
                 Claude Code
               </span>
               <br />
@@ -271,13 +288,13 @@ export default function Home() {
                 className="inline-block h-[0.85em] align-baseline"
               />
             </h1>
-            <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-xl mt-6">
+            <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 text-lg md:text-xl mt-4 md:mt-6">
               Download and try the app for free
             </p>
           </div>
 
           {/* Right - Hero Image */}
-          <div className="relative h-[400px] lg:h-[520px]">
+          <div className="relative h-[280px] md:h-[400px] lg:h-[520px]">
             <img
               src="/hero.png"
               alt="Vibey.codes app screenshot"
@@ -289,11 +306,11 @@ export default function Home() {
       </section>
 
       {/* About Me Section */}
-      <section className="relative z-10 max-w-[1280px] mx-auto px-8 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
           {/* Left - Photo and Name */}
           <div>
-            <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-[#ebecf0] mb-6">
+            <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-[#ebecf0] mb-6">
               About Me
             </h2>
             <div className="w-44 h-44 rounded-full bg-[#242529] mb-6 overflow-hidden">
@@ -341,28 +358,28 @@ export default function Home() {
       </div>
 
       {/* Why Am I Building Vibey Section */}
-      <section className="relative z-10 py-24" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-center text-[#ebecf0] mb-16 max-w-[1280px] mx-auto px-8">
+      <section className="relative z-10 py-12 md:py-24 overflow-hidden" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-center text-[#ebecf0] mb-8 md:mb-16 max-w-[1280px] mx-auto px-4 md:px-8">
           Why Am I Building Vibey
         </h2>
 
         {/* Carousel - full width, bleeds to edge */}
-        <div className="relative pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
+        <div className="relative pl-4 md:pl-8 lg:pl-[calc((100vw-1280px)/2+32px)]">
           <div className="overflow-hidden">
             <div
-              className="flex gap-5 transition-transform duration-300 ease-out"
-              style={{ transform: `translateX(-${carouselIndex * (450 + 20)}px)` }}
+              className="flex gap-4 md:gap-5 transition-transform duration-300 ease-out"
+              style={{ transform: `translateX(-${carouselIndex * (cardWidth + 16)}px)` }}
             >
               {painPoints.map((point, index) => (
                 <div
                   key={index}
-                  className="flex-none w-[450px] h-[302px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 flex flex-col justify-between shadow-lg"
+                  className="flex-none w-[calc(100vw-48px)] md:w-[450px] min-h-[280px] md:h-[302px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-6 md:p-8 flex flex-col justify-between shadow-lg"
                 >
                   <div>
-                    <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white mb-2">
+                    <h3 className="font-[family-name:var(--font-lexend)] font-bold text-lg md:text-xl text-white mb-2">
                       {point.title}
                     </h3>
-                    <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 leading-relaxed">
+                    <p className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1]/60 leading-relaxed text-sm md:text-base">
                       {point.description}
                     </p>
                   </div>
@@ -372,18 +389,18 @@ export default function Home() {
           </div>
 
           {/* Carousel Controls */}
-          <div className="flex justify-end gap-4 mt-8 pr-8 lg:pr-[calc((100vw-1280px)/2+32px)]">
+          <div className="flex justify-end gap-4 mt-6 md:mt-8 pr-4 md:pr-8 lg:pr-[calc((100vw-1280px)/2+32px)]">
             <button
               onClick={prevSlide}
               disabled={carouselIndex === 0}
-              className="p-5 bg-[#242529] border border-[#242529] rounded-2xl text-white disabled:opacity-30 hover:bg-[#2a2b30] transition-colors"
+              className="p-3 md:p-5 bg-[#242529] border border-[#242529] rounded-xl md:rounded-2xl text-white disabled:opacity-30 hover:bg-[#2a2b30] transition-colors"
             >
               <ArrowLeft />
             </button>
             <button
               onClick={nextSlide}
               disabled={carouselIndex === maxIndex}
-              className="p-5 bg-[#242529] border border-[#242529] rounded-2xl text-white disabled:opacity-30 hover:bg-[#2a2b30] transition-colors"
+              className="p-3 md:p-5 bg-[#242529] border border-[#242529] rounded-xl md:rounded-2xl text-white disabled:opacity-30 hover:bg-[#2a2b30] transition-colors"
             >
               <ArrowRight />
             </button>
@@ -392,8 +409,8 @@ export default function Home() {
       </section>
 
       {/* Price Plans Section */}
-      <section className="relative z-10 max-w-[1280px] mx-auto px-8 py-24">
-        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-5xl text-center text-white mb-4">
+      <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
+        <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-center text-white mb-4">
           Price Plans
         </h2>
         <p className="text-center text-[#d0d0d1] max-w-xl mx-auto mb-12">
@@ -456,7 +473,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 max-w-[1280px] mx-auto px-8 py-12 border-t border-[#242529]">
+      <footer className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-8 md:py-12 border-t border-[#242529]">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <VibeyLogo />
           <p className="text-[#d0d0d1]/60 text-sm">
