@@ -237,6 +237,13 @@ export default function Home() {
             <AppleLogo />
             <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
           </a>
+          <a
+            href="/windows"
+            className="flex items-center gap-2 bg-[#242529] text-white px-6 py-3 rounded hover:bg-[#2a2b30] transition-colors border border-[#3a3b40]"
+          >
+            <WindowsLogo />
+            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
+          </a>
         </div>
       </header>
 
