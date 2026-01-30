@@ -246,7 +246,7 @@ export default function Home() {
           {/* Left - Headline */}
           <div>
             <h1 className="text-5xl lg:text-6xl leading-tight">
-              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757]">
+              <span className="font-[family-name:var(--font-garamond)] font-extrabold text-[#da7757] text-6xl lg:text-7xl">
                 Claude Code
               </span>
               <br />
