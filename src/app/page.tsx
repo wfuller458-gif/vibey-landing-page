@@ -401,7 +401,7 @@ export default function Home() {
       <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
           {/* Left - Photo and Name */}
-          <div className="text-center md:text-left flex flex-col items-center md:items-start">
+          <div>
             <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-[#ebecf0] mb-6">
               About Me
             </h2>
@@ -421,7 +421,7 @@ export default function Home() {
           </div>
 
           {/* Right - Story */}
-          <div className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] leading-relaxed space-y-4 text-center md:text-left">
+          <div className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] leading-relaxed space-y-4">
             <p>I built Vibey to move faster on my side projects.</p>
             <p>
               Claude Code massively expanded what I can build as a designer but working in a
