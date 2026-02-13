@@ -113,11 +113,7 @@ function CloseIcon() {
 export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPortalModal, setShowPortalModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [portalEmail, setPortalEmail] = useState("");
-  const [portalLoading, setPortalLoading] = useState(false);
-  const [portalError, setPortalError] = useState("");
   const [cardWidth, setCardWidth] = useState(450);
   const [visibleCards, setVisibleCards] = useState(3);
   const maxIndex = Math.max(0, painPoints.length - visibleCards + 1);
@@ -170,81 +166,8 @@ export default function Home() {
     }
   };
 
-  const handlePortal = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPortalLoading(true);
-    setPortalError("");
-
-    try {
-      const response = await fetch("/api/portal", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: portalEmail }),
-      });
-
-      const data = await response.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setPortalError(data.error || "No purchase found for this email");
-      }
-    } catch {
-      setPortalError("Something went wrong. Please try again.");
-    } finally {
-      setPortalLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#121418] overflow-x-hidden overflow-y-auto">
-      {/* Manage Purchase Modal */}
-      {showPortalModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 w-full max-w-md mx-4">
-            <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white mb-2">
-              Manage Purchase
-            </h3>
-            <p className="text-[#d0d0d1]/60 mb-6">
-              Enter the email you used to purchase.
-            </p>
-            <form onSubmit={handlePortal}>
-              <input
-                type="email"
-                value={portalEmail}
-                onChange={(e) => setPortalEmail(e.target.value)}
-                placeholder="your@email.com"
-                className="w-full bg-[#121418] border border-[#242529] rounded-lg px-4 py-3 text-white placeholder-[#d0d0d1]/40 mb-4 focus:outline-none focus:border-[#0459fe]"
-                required
-              />
-              {portalError && (
-                <p className="text-red-400 text-sm mb-4">{portalError}</p>
-              )}
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowPortalModal(false);
-                    setPortalEmail("");
-                    setPortalError("");
-                  }}
-                  className="flex-1 py-3 rounded-lg border border-[#242529] text-[#d0d0d1] hover:bg-[#242529] transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={portalLoading}
-                  className="flex-1 bg-[#0459fe] text-white py-3 rounded-lg hover:bg-[#0349d4] transition-colors disabled:opacity-50"
-                >
-                  {portalLoading ? "Loading..." : "Continue"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* Background gradient decoration */}
       <div className="absolute top-0 left-0 right-0 h-[800px] opacity-30 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-full">
@@ -258,12 +181,12 @@ export default function Home() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <button
-            onClick={() => setShowPortalModal(true)}
+          <a
+            href="#pricing"
             className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
           >
-            Manage Purchase
-          </button>
+            Pricing
+          </a>
           <a
             href="/Vibey.code.zip"
             download
@@ -318,15 +241,13 @@ export default function Home() {
                 <WindowsLogo />
                 <span className="font-[family-name:var(--font-atkinson)]">Download for Windows</span>
               </a>
-              <button
-                onClick={() => {
-                  setShowMobileMenu(false);
-                  setShowPortalModal(true);
-                }}
+              <a
+                href="#pricing"
+                onClick={() => setShowMobileMenu(false)}
                 className="flex items-center gap-3 text-[#d0d0d1] hover:text-white px-4 py-3 rounded-lg border border-[#242529] hover:bg-[#242529] transition-colors text-left"
               >
-                <span className="font-[family-name:var(--font-atkinson)]">Manage Purchase</span>
-              </button>
+                <span className="font-[family-name:var(--font-atkinson)]">Pricing</span>
+              </a>
             </nav>
           </div>
         </div>
