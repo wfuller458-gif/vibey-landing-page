@@ -537,10 +537,10 @@ export default function Home() {
             </div>
             <p className="text-white">
               <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                $49.99
+                $39.99
               </span>
-              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 ml-2">
-                one-time
+              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through ml-2">
+                $49.99
               </span>
             </p>
             <button
