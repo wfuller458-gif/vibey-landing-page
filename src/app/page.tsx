@@ -181,12 +181,12 @@ export default function Home() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <a
-            href="#pricing"
+          <button
+            onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
             className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
           >
             Pricing
-          </a>
+          </button>
           <a
             href="/Vibey.code.zip"
             download
@@ -241,13 +241,15 @@ export default function Home() {
                 <WindowsLogo />
                 <span className="font-[family-name:var(--font-atkinson)]">Download for Windows</span>
               </a>
-              <a
-                href="#pricing"
-                onClick={() => setShowMobileMenu(false)}
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="flex items-center gap-3 text-[#d0d0d1] hover:text-white px-4 py-3 rounded-lg border border-[#242529] hover:bg-[#242529] transition-colors text-left"
               >
                 <span className="font-[family-name:var(--font-atkinson)]">Pricing</span>
-              </a>
+              </button>
             </nav>
           </div>
         </div>
