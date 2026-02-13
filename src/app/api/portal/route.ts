@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     if (customers.data.length === 0) {
       return NextResponse.json(
-        { error: "No subscription found for this email" },
+        { error: "No purchase found for this email" },
         { status: 404 }
       );
     }

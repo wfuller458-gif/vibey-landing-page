@@ -112,7 +112,7 @@ function CloseIcon() {
 
 export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState<"monthly" | "yearly" | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPortalModal, setShowPortalModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [portalEmail, setPortalEmail] = useState("");
@@ -146,18 +146,13 @@ export default function Home() {
     setCarouselIndex((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleCheckout = async (plan: "monthly" | "yearly") => {
-    setIsLoading(plan);
+  const handleCheckout = async () => {
+    setIsLoading(true);
     try {
-      const priceId =
-        plan === "monthly"
-          ? process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID
-          : process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID;
-
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({}),
       });
 
       const data = await response.json();
@@ -171,7 +166,7 @@ export default function Home() {
       console.error("Checkout error:", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(null);
+      setIsLoading(false);
     }
   };
 
@@ -192,7 +187,7 @@ export default function Home() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        setPortalError(data.error || "No subscription found for this email");
+        setPortalError(data.error || "No purchase found for this email");
       }
     } catch {
       setPortalError("Something went wrong. Please try again.");
@@ -203,15 +198,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#121418] overflow-x-hidden overflow-y-auto">
-      {/* Manage Subscription Modal */}
+      {/* Manage Purchase Modal */}
       {showPortalModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div className="bg-[#1c1e22] border border-[#242529] rounded-2xl p-8 w-full max-w-md mx-4">
             <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white mb-2">
-              Manage Subscription
+              Manage Purchase
             </h3>
             <p className="text-[#d0d0d1]/60 mb-6">
-              Enter the email you used to subscribe.
+              Enter the email you used to purchase.
             </p>
             <form onSubmit={handlePortal}>
               <input
@@ -267,7 +262,7 @@ export default function Home() {
             onClick={() => setShowPortalModal(true)}
             className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
           >
-            Manage Subscription
+            Manage Purchase
           </button>
           <a
             href="/Vibey.code.zip"
@@ -330,7 +325,7 @@ export default function Home() {
                 }}
                 className="flex items-center gap-3 text-[#d0d0d1] hover:text-white px-4 py-3 rounded-lg border border-[#242529] hover:bg-[#242529] transition-colors text-left"
               >
-                <span className="font-[family-name:var(--font-atkinson)]">Manage Subscription</span>
+                <span className="font-[family-name:var(--font-atkinson)]">Manage Purchase</span>
               </button>
             </nav>
           </div>
@@ -504,13 +499,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Price Plans Section */}
-      <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
+      {/* Pricing Section */}
+      <section id="pricing" className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
         <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-center text-white mb-4">
-          Price Plans
+          Pricing
         </h2>
         <p className="text-center text-[#d0d0d1] max-w-xl mx-auto mb-12">
-          Choose a plan that works for you. Cancel anytime. Vibey is still in early development with more features on the way. To thank our first users, use code{" "}
+          One-time purchase. Lifetime access. All future updates included. To thank our first users, use code{" "}
           <span className="inline-flex items-center gap-1">
             <span className="font-bold text-white">EARLYADOPTER20</span>
             <button
@@ -529,60 +524,31 @@ export default function Home() {
           {" "}at checkout for 20% off.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-6 justify-center">
-          {/* Monthly Plan */}
-          <div className="w-full md:w-[353px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
+        <div className="flex justify-center">
+          {/* Lifetime Plan */}
+          <div className="w-full max-w-[400px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
             <div className="mb-2">
               <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white">
-                Monthly
+                Lifetime Access
               </h3>
               <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                Cancel anytime.
+                Pay once, use forever.
               </p>
             </div>
             <p className="text-white">
               <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                $6.39
-              </span>
-              <span className="font-[family-name:var(--font-atkinson)] text-xl">/mo</span>
-              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through ml-2">
-                $7.99
-              </span>
-            </p>
-            <button
-              onClick={() => handleCheckout("monthly")}
-              disabled={isLoading !== null}
-              className="mt-4 w-full bg-[#0459fe] text-white py-3 rounded-lg font-[family-name:var(--font-atkinson)] hover:bg-[#0349d4] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading === "monthly" ? "Loading..." : "Subscribe Monthly"}
-            </button>
-          </div>
-
-          {/* Yearly Plan */}
-          <div className="w-full md:w-[353px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
-            <div className="mb-2">
-              <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white">
-                Yearly
-              </h3>
-              <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                Cancel anytime.
-              </p>
-            </div>
-            <p className="text-white">
-              <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                $39.99
-              </span>
-              <span className="font-[family-name:var(--font-atkinson)] text-xl">/yr</span>
-              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through ml-2">
                 $49.99
               </span>
+              <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 ml-2">
+                one-time
+              </span>
             </p>
             <button
-              onClick={() => handleCheckout("yearly")}
-              disabled={isLoading !== null}
+              onClick={handleCheckout}
+              disabled={isLoading}
               className="mt-4 w-full bg-[#0459fe] text-white py-3 rounded-lg font-[family-name:var(--font-atkinson)] hover:bg-[#0349d4] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading === "yearly" ? "Loading..." : "Subscribe Yearly"}
+              {isLoading ? "Loading..." : "Purchase Vibey"}
             </button>
           </div>
         </div>

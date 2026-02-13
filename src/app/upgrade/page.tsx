@@ -15,20 +15,15 @@ function VibeyLogo() {
 }
 
 export default function UpgradePage() {
-  const [isLoading, setIsLoading] = useState<"monthly" | "yearly" | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleCheckout = async (plan: "monthly" | "yearly") => {
-    setIsLoading(plan);
+  const handleCheckout = async () => {
+    setIsLoading(true);
     try {
-      const priceId =
-        plan === "monthly"
-          ? process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID
-          : process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID;
-
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({}),
       });
 
       const data = await response.json();
@@ -42,7 +37,7 @@ export default function UpgradePage() {
       console.error("Checkout error:", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(null);
+      setIsLoading(false);
     }
   };
 
@@ -57,12 +52,12 @@ export default function UpgradePage() {
 
       {/* Main content */}
       <main className="flex-1 flex items-center justify-center px-4">
-        <div className="max-w-[750px] w-full">
+        <div className="max-w-[450px] w-full">
           <h1 className="font-[family-name:var(--font-lexend)] font-bold text-4xl text-center text-white mb-3">
-            Upgrade to Vibey
+            Get Vibey
           </h1>
           <p className="text-center text-[#d0d0d1] mb-10">
-            Choose a plan that works for you. Cancel anytime. Vibey is still in early development with more features on the way. To thank our first users, use code{" "}
+            One-time purchase. Lifetime access. All future updates included. To thank our first users, use code{" "}
             <span className="inline-flex items-center gap-1">
               <span className="font-bold text-white">EARLYADOPTER20</span>
               <button
@@ -81,66 +76,37 @@ export default function UpgradePage() {
             {" "}at checkout for 20% off.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-6 justify-center">
-            {/* Monthly Plan */}
-            <div className="w-full md:w-[353px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
+          <div className="flex justify-center">
+            {/* Lifetime Plan */}
+            <div className="w-full bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
               <div className="mb-2">
                 <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white">
-                  Monthly
+                  Lifetime Access
                 </h3>
                 <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                  Cancel anytime.
+                  Pay once, use forever.
                 </p>
               </div>
               <p className="text-white">
                 <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                  $6.39
-                </span>
-                <span className="font-[family-name:var(--font-atkinson)] text-xl">/mo</span>
-                <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through ml-2">
-                  $7.99
-                </span>
-              </p>
-              <button
-                onClick={() => handleCheckout("monthly")}
-                disabled={isLoading !== null}
-                className="mt-4 w-full bg-[#0459fe] text-white py-3 rounded-lg font-[family-name:var(--font-atkinson)] hover:bg-[#0349d4] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading === "monthly" ? "Loading..." : "Subscribe Monthly"}
-              </button>
-            </div>
-
-            {/* Yearly Plan */}
-            <div className="w-full md:w-[353px] bg-[#1c1e22] border border-[#242529] rounded-2xl p-5">
-              <div className="mb-2">
-                <h3 className="font-[family-name:var(--font-lexend)] font-bold text-xl text-white">
-                  Yearly
-                </h3>
-                <p className="font-[family-name:var(--font-lexend)] font-light text-[#d0d0d1]">
-                  Cancel anytime.
-                </p>
-              </div>
-              <p className="text-white">
-                <span className="font-[family-name:var(--font-atkinson)] font-bold text-4xl">
-                  $39.99
-                </span>
-                <span className="font-[family-name:var(--font-atkinson)] text-xl">/yr</span>
-                <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 line-through ml-2">
                   $49.99
                 </span>
+                <span className="font-[family-name:var(--font-atkinson)] text-xl text-[#d0d0d1]/60 ml-2">
+                  one-time
+                </span>
               </p>
               <button
-                onClick={() => handleCheckout("yearly")}
-                disabled={isLoading !== null}
+                onClick={handleCheckout}
+                disabled={isLoading}
                 className="mt-4 w-full bg-[#0459fe] text-white py-3 rounded-lg font-[family-name:var(--font-atkinson)] hover:bg-[#0349d4] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading === "yearly" ? "Loading..." : "Subscribe Yearly"}
+                {isLoading ? "Loading..." : "Purchase Vibey"}
               </button>
             </div>
           </div>
 
           <p className="text-center text-[#d0d0d1]/50 text-sm mt-8">
-            Already subscribed? Open Vibey and click{" "}
+            Already purchased? Open Vibey and click{" "}
             <span className="text-[#0459fe]">&quot;Enter License Key&quot;</span>
             {" "}in the sidebar.
           </p>

@@ -70,7 +70,7 @@ function SuccessContent() {
       ) : license ? (
         <>
           <p className="text-[#d0d0d1] mb-4">
-            Thank you for subscribing! Here&apos;s your license key:
+            Thank you for purchasing Vibey! Here&apos;s your license key:
           </p>
 
           {/* License Key Display */}

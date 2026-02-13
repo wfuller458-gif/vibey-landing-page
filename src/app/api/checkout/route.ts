@@ -12,20 +12,22 @@ function getStripe() {
 export async function POST(request: NextRequest) {
   try {
     const stripe = getStripe();
-    const { priceId, email } = await request.json();
+    const { email } = await request.json();
+
+    const priceId = process.env.STRIPE_LIFETIME_PRICE_ID;
 
     if (!priceId) {
       return NextResponse.json(
-        { error: "Price ID is required" },
-        { status: 400 }
+        { error: "Lifetime price ID is not configured" },
+        { status: 500 }
       );
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-    // Create Stripe checkout session
+    // Create Stripe checkout session for one-time payment
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
+      mode: "payment",
       payment_method_types: ["card"],
       line_items: [
         {
