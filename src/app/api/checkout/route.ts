@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
       ],
       // Pre-fill email if provided
       ...(email && { customer_email: email }),
+      // Create a Stripe customer so webhook can retrieve email
+      customer_creation: "always",
       // Redirect URLs
       success_url: `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/#pricing`,
