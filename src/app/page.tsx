@@ -188,7 +188,7 @@ export default function Home() {
             Pricing
           </button>
           <a
-            href="/Vibey.code.zip"
+            href="/Vibey.dmg"
             download
             className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
           >
@@ -225,7 +225,7 @@ export default function Home() {
             </div>
             <nav className="flex flex-col gap-4">
               <a
-                href="/Vibey.code.zip"
+                href="/Vibey.dmg"
                 download
                 className="flex items-center gap-3 bg-[#0459fe] text-white px-4 py-3 rounded-lg hover:bg-[#0349d4] transition-colors"
                 onClick={() => setShowMobileMenu(false)}
@@ -286,7 +286,7 @@ export default function Home() {
             {/* Mobile Download Buttons */}
             <div className="flex flex-col gap-3 mt-6 md:hidden">
               <a
-                href="/Vibey.code.zip"
+                href="/Vibey.dmg"
                 download
                 className="flex items-center justify-center gap-3 bg-[#0459fe] text-white px-6 py-4 rounded-lg hover:bg-[#0349d4] transition-colors"
               >
