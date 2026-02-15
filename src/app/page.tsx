@@ -256,7 +256,7 @@ export default function Home() {
       )}
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-8 md:pt-16 pb-16 md:pb-32" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative z-10 pt-8 md:pt-16 pb-16 md:pb-32 border-y border-[#242529]" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left - Headline */}
@@ -370,7 +370,7 @@ export default function Home() {
       </div>
 
       {/* Why Am I Building Vibey Section */}
-      <section className="relative z-10 py-12 md:py-24 overflow-hidden" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <section className="relative z-10 py-12 md:py-24 overflow-hidden border-y border-[#242529]" style={{ backgroundImage: 'url(/vibeybackground.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-center text-[#ebecf0] mb-8 md:mb-16 max-w-[1280px] mx-auto px-4 md:px-8">
           Why Am I Building Vibey
         </h2>
