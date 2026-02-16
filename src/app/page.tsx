@@ -110,19 +110,94 @@ function CloseIcon() {
   );
 }
 
+// Upvote triangle icon
+function UpvoteIcon({ size = 18, color = "currentColor" }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5l8 14H4z" />
+    </svg>
+  );
+}
+
 export default function Home() {
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const upvoteTarget = 337;
+  const [upvoteCount, setUpvoteCount] = useState(0);
+  const [upvoteStarted, setUpvoteStarted] = useState(false);
+  const [upvoteRef, setUpvoteRef] = useState<HTMLElement | null>(null);
+  const [headerOnWhite, setHeaderOnWhite] = useState(false);
+  const [widgetOnWhite, setWidgetOnWhite] = useState(false);
+  const [phSectionRef, setPhSectionRef] = useState<HTMLElement | null>(null);
+
+  // Start counting when the upvote section comes into view
+  useEffect(() => {
+    if (!upvoteRef || upvoteStarted) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setUpvoteStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(upvoteRef);
+    return () => observer.disconnect();
+  }, [upvoteRef, upvoteStarted]);
+
+  // Count up 1 by 1, one number per second
+  useEffect(() => {
+    if (!upvoteStarted) return;
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 1;
+      setUpvoteCount(current);
+      if (current >= upvoteTarget) clearInterval(interval);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [upvoteStarted]);
+  const [lightboxImage, setLightboxImage] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [cardWidth, setCardWidth] = useState(450);
+  const [galleryCardWidth, setGalleryCardWidth] = useState(580);
   const [visibleCards, setVisibleCards] = useState(3);
   const maxIndex = Math.max(0, painPoints.length - visibleCards + 1);
+  const galleryImages = [1, 2, 3, 4, 5, 6];
+
+  // Track when header and widget overlap the white Product Hunt section
+  useEffect(() => {
+    if (!phSectionRef) return;
+    const headerHeight = 64;
+    // Widget sits at bottom: 20px from bottom, ~56px tall
+    const widgetBottom = 20;
+    const widgetHeight = 56;
+
+    const handleScroll = () => {
+      if (!phSectionRef) return;
+      const rect = phSectionRef.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Header: white when section overlaps the fixed header at top
+      setHeaderOnWhite(rect.top <= headerHeight && rect.bottom >= headerHeight);
+
+      // Widget: white when section overlaps the widget at bottom-left
+      const widgetTop = viewportHeight - widgetBottom - widgetHeight;
+      setWidgetOnWhite(rect.top <= widgetTop + widgetHeight && rect.bottom >= widgetTop);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [phSectionRef]);
 
   // Calculate card width and visible cards based on viewport
   useEffect(() => {
     const updateLayout = () => {
       const isMobile = window.innerWidth < 768;
       setCardWidth(isMobile ? window.innerWidth - 48 : 450);
+      setGalleryCardWidth(isMobile ? window.innerWidth - 32 : 580);
       const newVisibleCards = isMobile ? 1 : 3;
       setVisibleCards(newVisibleCards);
       // Reset carousel to valid index if needed
@@ -167,7 +242,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#121418] overflow-x-hidden overflow-y-auto">
+    <div className="min-h-screen bg-[#121418] overflow-x-hidden pt-16">
       {/* Background gradient decoration */}
       <div className="absolute top-0 left-0 right-0 h-[800px] opacity-30 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1400px] h-full">
@@ -176,41 +251,55 @@ export default function Home() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between px-4 md:px-8 py-4 max-w-[1280px] mx-auto backdrop-blur-sm">
-        <VibeyLogo />
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-colors duration-300 ${headerOnWhite ? 'bg-white border-b border-[#e5e7eb]' : 'bg-[#121418]/90 backdrop-blur-sm border-b border-transparent'}`}>
+        <div className="flex items-center justify-between px-4 md:px-8 py-4 max-w-[1280px] mx-auto">
+          {headerOnWhite ? (
+            <img
+              src="/vibeycodeslogo-dark.png"
+              alt="Vibey.codes"
+              className="h-8"
+            />
+          ) : (
+            <img
+              src="/vibeycodeslogo.png"
+              alt="Vibey.codes"
+              className="h-8"
+            />
+          )}
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            <button
+              onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
+              className={`font-[family-name:var(--font-atkinson)] transition-colors ${headerOnWhite ? 'text-[#4b5563] hover:text-[#21293c]' : 'text-[#d0d0d1] hover:text-white'}`}
+            >
+              Pricing
+            </button>
+            <a
+              href="/Vibey.dmg"
+              download
+              className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            >
+              <AppleLogo />
+              <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
+            </a>
+            <a
+              href="/windows"
+              className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
+            >
+              <WindowsLogo />
+              <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
+            </a>
+          </div>
+
+          {/* Mobile Menu Button */}
           <button
-            onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-            className="font-[family-name:var(--font-atkinson)] text-[#d0d0d1] hover:text-white transition-colors"
+            onClick={() => setShowMobileMenu(true)}
+            className={`md:hidden p-2 transition-colors ${headerOnWhite ? 'text-[#21293c]' : 'text-white'}`}
           >
-            Pricing
+            <MenuIcon />
           </button>
-          <a
-            href="/Vibey.dmg"
-            download
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
-          >
-            <AppleLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Download</span>
-          </a>
-          <a
-            href="/windows"
-            className="flex items-center gap-2 bg-[#0459fe] text-white px-6 py-3 rounded hover:bg-[#0349d4] transition-colors"
-          >
-            <WindowsLogo />
-            <span className="font-[family-name:var(--font-atkinson)] tracking-wide">Windows</span>
-          </a>
         </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setShowMobileMenu(true)}
-          className="md:hidden p-2 text-white"
-        >
-          <MenuIcon />
-        </button>
       </header>
 
       {/* Mobile Menu Overlay */}
@@ -314,6 +403,165 @@ export default function Home() {
         </div>
         </div>
       </section>
+
+      {/* Product Hunt Section */}
+      <section ref={(el) => { if (el && !phSectionRef) setPhSectionRef(el); }} className="relative z-10 bg-white py-12 md:py-16">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-6 md:mb-8">
+            <div>
+              <h2 className="font-[family-name:var(--font-lexend)] font-bold text-3xl md:text-5xl text-[#21293c] mb-4">
+                Vibey – Ship faster with Claude Code
+              </h2>
+              <p className="font-[family-name:var(--font-atkinson)] text-[#6b7280] text-lg md:text-xl max-w-2xl">
+                Plan prompts, draft PRDs, and run Claude Code in one place.
+              </p>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-5 bg-[#da7757] text-white font-[family-name:var(--font-atkinson)] font-medium text-sm px-5 py-2.5 rounded-lg hover:bg-[#c4654a] transition-colors"
+              >
+                View on Product Hunt
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <div className="font-[family-name:var(--font-atkinson)] text-[#4b5563] text-sm md:text-base mt-8 max-w-2xl leading-relaxed space-y-3">
+                <p>
+                  As a designer, Claude Code massively expanded what I can build but I found the terminal painful. When Claude is running or I hit usage limits, I can&apos;t easily plan future prompts or features without bouncing between markdown files, Google Docs, and Notion.
+                </p>
+                <p>So I built Vibey: a simple Mac app with:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>A built in terminal for Claude Code</li>
+                  <li>Pages to draft prompts, PRDs, and feature plans</li>
+                  <li>One click send to Claude</li>
+                  <li>Plan while Claude runs. Ship faster without context switching.</li>
+                </ul>
+                <p className="font-medium text-[#21293c]">Free to try. No subscription!</p>
+              </div>
+            </div>
+
+            {/* Upvote button */}
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              ref={(el) => { if (el && !upvoteRef) setUpvoteRef(el); }}
+              className="flex-none flex flex-col items-center gap-1 border-2 border-[#e5e7eb] hover:border-[#da7757] rounded-xl px-5 py-3 transition-colors group cursor-pointer"
+            >
+              <UpvoteIcon size={20} color="#21293c" />
+              <span className="font-[family-name:var(--font-lexend)] font-bold text-lg text-[#21293c] tabular-nums">{upvoteCount}</span>
+            </a>
+          </div>
+
+          {/* Gallery carousel */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-xl">
+              <div
+                className="flex gap-3 transition-transform duration-300 ease-out"
+                style={{ transform: `translateX(-${galleryIndex * (galleryCardWidth + 12)}px)` }}
+              >
+                {galleryImages.map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => setLightboxImage(num)}
+                    className="flex-none w-[calc(100vw-32px)] md:w-[580px] rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                    style={{ aspectRatio: '1270 / 760' }}
+                  >
+                    <img
+                      src={`/ph-${num}.png`}
+                      alt={`Vibey screenshot ${num}`}
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation arrow - right */}
+            {galleryIndex < galleryImages.length - 1 && (
+              <button
+                onClick={() => setGalleryIndex((prev) => Math.min(prev + 1, galleryImages.length - 1))}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 border border-[#e5e7eb] rounded-full flex items-center justify-center text-[#21293c] hover:bg-white shadow-md transition-colors"
+              >
+                <ArrowRight />
+              </button>
+            )}
+
+            {/* Navigation arrow - left */}
+            {galleryIndex > 0 && (
+              <button
+                onClick={() => setGalleryIndex((prev) => Math.max(prev - 1, 0))}
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 border border-[#e5e7eb] rounded-full flex items-center justify-center text-[#21293c] hover:bg-white shadow-md transition-colors"
+              >
+                <ArrowLeft />
+              </button>
+            )}
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex justify-center gap-2 mt-5">
+            {galleryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setGalleryIndex(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  galleryIndex === index ? "bg-[#da7757]" : "bg-[#d1d5db]"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      {lightboxImage !== null && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4 md:p-8"
+          onClick={() => setLightboxImage(null)}
+        >
+          <button
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+          >
+            <CloseIcon />
+          </button>
+
+          {/* Previous arrow */}
+          {lightboxImage > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setLightboxImage(lightboxImage - 1); }}
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            >
+              <ArrowLeft />
+            </button>
+          )}
+
+          {/* Image */}
+          <img
+            src={`/ph-${lightboxImage}.png`}
+            alt={`Vibey screenshot ${lightboxImage}`}
+            className="max-w-[90vw] max-h-[85vh] rounded-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* Next arrow */}
+          {lightboxImage < galleryImages.length && (
+            <button
+              onClick={(e) => { e.stopPropagation(); setLightboxImage(lightboxImage + 1); }}
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            >
+              <ArrowRight />
+            </button>
+          )}
+
+          {/* Counter */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-sm font-[family-name:var(--font-atkinson)]">
+            {lightboxImage} / {galleryImages.length}
+          </div>
+        </div>
+      )}
 
       {/* About Me Section */}
       <section className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-24">
@@ -486,6 +734,32 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Sticky Product Hunt Widget */}
+      <a
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`fixed bottom-5 left-5 z-50 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-lg transition-all duration-300 group ${widgetOnWhite ? 'bg-white border border-[#e5e7eb] hover:border-[#da7757]/50' : 'bg-[#1c1e22] border border-[#242529] hover:border-[#da7757]/50'}`}
+      >
+        <img
+          src="/producthunt-logo.png"
+          alt="Product Hunt"
+          className="w-10 h-10 rounded-full flex-none"
+        />
+        <div>
+          <p className={`font-[family-name:var(--font-lexend)] font-semibold text-sm leading-tight group-hover:text-[#da7757] transition-colors ${widgetOnWhite ? 'text-[#21293c]' : 'text-white'}`}>
+            Support us on Product Hunt
+          </p>
+          <p className={`font-[family-name:var(--font-atkinson)] text-xs ${widgetOnWhite ? 'text-[#9ca3af]' : 'text-[#d0d0d1]/40'}`}>
+            Leave a review
+          </p>
+        </div>
+        <div className={`flex flex-col items-center gap-0.5 pl-3 ml-1 ${widgetOnWhite ? 'border-l border-[#e5e7eb]' : 'border-l border-[#242529]'}`}>
+          <UpvoteIcon size={14} color="#da7757" />
+          <span className="font-[family-name:var(--font-lexend)] font-bold text-sm text-[#da7757] tabular-nums">{upvoteCount}</span>
+        </div>
+      </a>
     </div>
   );
 }
